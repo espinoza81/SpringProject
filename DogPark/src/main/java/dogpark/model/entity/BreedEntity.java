@@ -1,7 +1,13 @@
 package dogpark.model.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "breeds")
 public class BreedEntity {
@@ -14,6 +20,9 @@ public class BreedEntity {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(nullable = false, name = "img_url")
+    private String imgURL;
 
     private int grooming;
 

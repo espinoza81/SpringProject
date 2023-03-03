@@ -16,6 +16,7 @@ public class InitService {
   private final UserRoleRepository userRoleRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final String defaultPassword;
 
   public InitService(UserRoleRepository userRoleRepository,
       UserRepository userRepository,
@@ -24,6 +25,7 @@ public class InitService {
     this.userRoleRepository = userRoleRepository;
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.defaultPassword = defaultPassword;
   }
 
   @PostConstruct
@@ -48,23 +50,26 @@ public class InitService {
   }
 
   private void initAdmin(){
-    var adminUser = new UserEntity().
-            setShelterName("AdminDogs").
-            setEmail("admin@example.com").
-            setUsername("Admin").
-            setPassword(passwordEncoder.encode("qazwsx")).
-            setRoles(userRoleRepository.findAll());
+    var adminUser = UserEntity.builder().
+            shelterName("AdminDogs").
+            email("admin@example.com").
+            username("Admin").
+            password(passwordEncoder.encode(defaultPassword)).
+            roles(userRoleRepository.findAll()).
+            build();
 
     userRepository.save(adminUser);
   }
 
   private void initNormalUser(){
 
-    var normalUser = new UserEntity().
-            setShelterName("EspinozaDogs").
-            setEmail("espinoza81@yahoo.com").
-            setUsername("Espinoza").
-            setPassword(passwordEncoder.encode("qazwsx"));
+    var normalUser = UserEntity.builder().
+            shelterName("EspinozaDogs").
+            email("espinoza81@yahoo.com").
+            username("Espinoza").
+            money(1000).
+            password(passwordEncoder.encode(defaultPassword)).
+            build();
 
     userRepository.save(normalUser);
   }
