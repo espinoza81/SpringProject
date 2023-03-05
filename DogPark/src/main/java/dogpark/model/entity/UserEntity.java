@@ -34,7 +34,7 @@ public class UserEntity {
 
     private int money;
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     private List<DogEntity> dogs;
 
     @OneToMany

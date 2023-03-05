@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}"></head>
+
+
+<body>
+<header>
+    <div th:replace="~{fragments/commons::navbar}">
+        Navbar
+    </div>
+
+    <div class="container">
+        <h2 class="text-center text-white">All breeds page</h2>
+        <div class="main-div mb-2 row">
+            <div class="col-md-4">
+                <img th:src="*{'/images/' + breed.imgURL}" alt="" class="img-fluid">
+                <h3 th:text="*{breed.name}">Name</h3>
+            </div>
+            <div class="col-md-4 align-self-center" th:text="*{breed.description}">Description</div>
+            <div class="col-md-4 align-self-center">
+                <div class="row mb-1">Grooming stats</div>
+                <div class="row mb-2">
+                    <div class="col-md-8 progress align-self-center pl-0">
+                        <div class="progress-bar bg-info" th:style="*{'width:' + breed.grooming +'%'}"></div>
+                    </div>
+                    <div class="col-md-4 text-center" th:text="*{breed.grooming + '/100'}"></div>
+                </div>
+                <div class="row mb-1">Agility stats</div>
+                <div class="row mb-2">
+                    <div class="col-md-8 progress align-self-center pl-0">
+                        <div class="progress-bar bg-success" th:style="*{'width:' + breed.agility +'%'}"></div>
+                    </div>
+                    <div class="col-md-4 text-center" th:text="*{breed.agility + '/100'}"></div>
+                </div>
+                <div class="row mb-1">Hunting stats</div>
+                <div class="row mb-2">
+                    <div class="col-md-8 progress align-self-center pl-0">
+                        <div class="progress-bar bg-danger" th:style="*{'width:' + breed.hunting +'%'}"></div>
+                    </div>
+                    <div class="col-md-4 text-center" th:text="*{breed.hunting + '/100'}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

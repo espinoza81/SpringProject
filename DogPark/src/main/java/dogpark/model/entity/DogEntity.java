@@ -25,6 +25,7 @@ public class DogEntity {
     private SexEnum sex;
 
     @ManyToOne
+    @JoinColumn(name = "breed_id")
     private BreedEntity breedEntity;
 
     private String name;
@@ -34,10 +35,16 @@ public class DogEntity {
     private int hunting;
 
     private int agility;
+    private int health;
+
+    private int awardCup;
 
     @OneToOne(fetch = FetchType.EAGER)
     private SaleEntity sale;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<PartnerEntity> studOffers;
+
+    @ManyToOne
+    private UserEntity owner;
 }
