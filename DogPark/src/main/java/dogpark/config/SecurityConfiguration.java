@@ -23,7 +23,7 @@ public class SecurityConfiguration {
           // allow access to all static files (images, CSS, js)
           requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
           // the URL-s below are available for all users - logged in and anonymous
-          requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll().
+          requestMatchers("/", "/users/login", "/users/register", "/users/login-error", "/dog/{id}").permitAll().
           // only for admins
           requestMatchers("/breeds/add").hasRole(UserRoleEnum.ADMIN.name()).
         anyRequest().authenticated().
