@@ -29,9 +29,6 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    private int food;
-    private int treat;
-
     private int money;
 
     @OneToMany(mappedBy = "owner")
@@ -79,6 +76,12 @@ public class UserEntity {
         this.money += money;
         return this;
     }
+
+    public UserEntity spendMoney(int money) {
+        this.money -= money;
+        return this;
+    }
+
 
     @Override
     public String toString() {
