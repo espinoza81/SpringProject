@@ -49,6 +49,18 @@ div.main-div, form.main-form{
   border-radius: 20px;
 }
 
+div.shelter-div{
+
+  /* Control the height of the image */
+  min-height: 380px;
+
+  /* Center and scale the image nicely */
+  background-size: cover;
+  position: relative;
+  border-radius: 20px;
+  background: transparent url("../images/OIP.jpg") no-repeat center;
+}
+
 img.main-img {
   padding: .25rem;
   background-color: transparent;

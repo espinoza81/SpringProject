@@ -1,8 +1,10 @@
 package dogpark.service;
 
 import dogpark.exeption.ObjectNotFoundException;
+import dogpark.model.dtos.ShelterDTO;
 import dogpark.model.entity.UserEntity;
 import dogpark.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,5 +39,13 @@ public class UserService {
         UserEntity user = userRepository.findUserEntityByEmail(email).
                 orElseThrow(() -> new ObjectNotFoundException("User with email "+ email + "not found"));
         return user.getMoney();
+    }
+
+    @Transactional
+    public ShelterDTO getShelterStats(String email) {
+        return userRepository
+                .findUserEntityByEmail(email)
+                .map(ShelterDTO::new)
+                .orElseThrow(() -> new ObjectNotFoundException("User with email " + email + "not found"));
     }
 }

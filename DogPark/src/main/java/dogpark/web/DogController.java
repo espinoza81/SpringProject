@@ -27,11 +27,6 @@ public class DogController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/dog")
-    public String register() {
-        return "my_dogs";
-    }
-
     @PreAuthorize("isOwner(#dogId)")
     @GetMapping("/dog/{id}")
     public String dog(@PathVariable("id") Long dogId,
