@@ -22,11 +22,6 @@ public class UserController {
     return "index";
   }
 
-  @GetMapping("/users/register")
-  public String register() {
-    return "auth-register";
-  }
-
   @GetMapping("/users/shelter")
   public String shelter(Model model,
                         @AuthenticationPrincipal UserDetails user) {

@@ -53,7 +53,7 @@ public class InitService {
     var adminUser = UserEntity.builder().
             shelterName("AdminDogs").
             email("admin@example.com").
-            username("Admin").
+            gameUsername("Admin").
             password(passwordEncoder.encode(defaultPassword)).
             roles(userRoleRepository.findAll()).
             build();
@@ -66,7 +66,7 @@ public class InitService {
     var normalUser = UserEntity.builder().
             shelterName("EspinozaDogs").
             email("espinoza81@yahoo.com").
-            username("Espinoza").
+            gameUsername("Espinoza").
             money(1000).
             password(passwordEncoder.encode(defaultPassword)).
             build();

@@ -9,8 +9,8 @@
     <div th:replace="~{fragments/commons::navbar}">
         Navbar
     </div>
-
     <div class="container">
+        <h4 class="text-right text-warning">You have <th:block th:text ="${money}"></th:block> $</h4>
         <h2 class="text-center text-white">Dog info page</h2>
         <div class="main-div mb-2 row" th:object="${dog}">
             <div class="col-md-5">

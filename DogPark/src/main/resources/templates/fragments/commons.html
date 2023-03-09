@@ -46,7 +46,7 @@
 <!--                            <div class="text-white" th:text="">-->
 <!--                            </div>-->
                             <div class="text-white">Welcome,
-                                <th:block sec:authentication="name"></th:block>
+                                <th:block sec:authentication="principal.gameUsername"></th:block>
                                 !
                             </div>
                             <form
