@@ -34,20 +34,12 @@ public class UserEntity {
     @OneToMany(mappedBy = "owner")
     private List<DogEntity> dogs;
 
-    @OneToMany
-    private List<SaleEntity> sales;
-
-    @OneToMany
-    private List<PartnerEntity> breedingOffers;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<UserRoleEntity> roles;
 
     public UserEntity() {
         this.money = 1000;
         this.dogs = new ArrayList<>();
-        this.sales = new ArrayList<>();
-        this.breedingOffers = new ArrayList<>();
         this.roles = new ArrayList<>();
     }
 
@@ -59,16 +51,6 @@ public class UserEntity {
 
     public UserEntity addDog(DogEntity dog) {
         this.dogs.add(dog);
-        return this;
-    }
-
-    public UserEntity addSales(SaleEntity sale) {
-        this.sales.add(sale);
-        return this;
-    }
-
-    public UserEntity addPartnerOffer(PartnerEntity partnerEntity) {
-        this.breedingOffers.add(partnerEntity);
         return this;
     }
 

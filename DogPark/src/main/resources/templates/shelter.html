@@ -12,31 +12,90 @@
 
     <div class="container" th:object="${shelter}">
         <h2 class="text-center text-white" th:text="*{name}">Shelter info page</h2>
-        <div class="shelter-div pb-0"></div>
+        <img class="mx-auto d-block rounded main-img" src="../images/OIP.jpg">
+<!--        <div class="shelter-div pb-0"></div>-->
         <div class="main-div mb-2">
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col-9 pr-0">Your money at the moment</div>
-                <div class="col-2 pl-0 pr-0" th:text="*{money}"></div>
-                <div class="col-1 pl-0">$</div>
+                <div class="col-2 pl-0 pr-0 text-right" th:text="*{money}"></div>
+                <div class="col-1 pl-0 text-right">$</div>
             </div>
             <div class="row">
                 <div class="col-9 pr-0">Number of dogs owned</div>
-                <div class="col-2 pl-0 pr-0" th:text="*{dogCount}"></div>
-                <div class="col-1 pl-0">br</div>
+                <div class="col-2 pl-0 pr-0 text-right" th:text="*{dogCount}"></div>
+                <div class="col-1 pl-0 text-right">br</div>
             </div>
             <div class="row">
                 <div class="col-9 pr-0">Number of cups</div>
-                <div class="col-2 pl-0 pr-0" th:text="*{cupCount}"></div>
-                <div class="col-1 pl-0">$</div>
+                <div class="col-2 pl-0 pr-0 text-right" th:text="*{cupCount}"></div>
+                <div class="col-1 pl-0 text-right">$</div>
             </div>
             <div class="row">
                 <div class="col-9 pr-0">Total amount of your stud offers</div>
-                <div class="col-2 pl-0 pr-0" th:text="*{studSum}"></div>
-                <div class="col-1 pl-0">$</div>
+                <div class="col-2 pl-0 pr-0 text-right" th:text="*{studSum}"></div>
+                <div class="col-1 pl-0 text-right">$</div>
             </div>
+            <hr class="hr-2 bg-judge">
+            <h4 class="text-judge text-center">Sale offers</h4>
+            <hr class="hr-2 bg-judge">
+            <table class="table table-hover text-judge">
+                <thead>
+                <tr class="row">
+                    <th class="col-md-7" scope="col"><h5 class="text-center">Dog name</h5></th>
+                    <th class="col-md-3" scope="col"><h5 class="text-center">Price</h5></th>
+                    <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row">
+
+                    <td class="col-md-7">
+                        <div id="parent">
+                            This is the main container.
+                            <div id="popup" style="display: none">some text here</div>
+                        </div>
+<!--                        <h5 class="text-left">-->
+<!--                            <a href="/">f8b44d7c-e173-4bc7-990d-7b85dbd2ded0</a>-->
+<!--                        </h5>-->
+                    </td>
+                    <td class="col-md-3"><h5 class="text-right">100 $</h5></td>
+                    <td class="col-md-2 d-flex justify-content-around">
+                        <form
+                                th:method="POST"
+                                th:action="@{/}">
+                            <button type="submit" class="btn btn-info btn-sm" value="delete">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr class="hr-2 bg-judge">
+            <hr class="hr-2 bg-judge">
+            <h4 class="text-judge text-center">Stud offers</h4>
+            <hr class="hr-2 bg-judge">
+            <table class="table table-hover text-judge">
+                <thead>
+                <tr class="row">
+                    <th class="col-md-7" scope="col"><h5 class="text-center">Dog name</h5></th>
+                    <th class="col-md-5" scope="col"><h5 class="text-center">Price</h5></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row">
+                    <td class="col-md-7">
+                        <h5 class="text-left">
+                            <a href="/">f8b44d7c-e173-4bc7-990d-7b85dbd2ded0</a>
+                        </h5>
+                    </td>
+                    <td class="col-md-5"><h5 class="text-right">100 $</h5></td>
+                </tr>
+                </tbody>
+            </table>
+            <hr class="hr-2 bg-judge">
         </div>
     </div>
-
     </div>
 </header>
 <footer th:replace="~{fragments/commons::footer}"></footer>

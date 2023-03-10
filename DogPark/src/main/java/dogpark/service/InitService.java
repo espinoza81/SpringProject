@@ -63,7 +63,7 @@ public class InitService {
 
   private void initNormalUser(){
 
-    var normalUser = UserEntity.builder().
+    var normalUserOne = UserEntity.builder().
             shelterName("EspinozaDogs").
             email("espinoza81@yahoo.com").
             gameUsername("Espinoza").
@@ -71,6 +71,15 @@ public class InitService {
             password(passwordEncoder.encode(defaultPassword)).
             build();
 
-    userRepository.save(normalUser);
+    var normalUserTwo = UserEntity.builder().
+            shelterName("PirinHill").
+            email("CoHuK@yahoo.com").
+            gameUsername("CoHuK").
+            money(1000).
+            password(passwordEncoder.encode(defaultPassword)).
+            build();
+
+    userRepository.save(normalUserOne);
+    userRepository.save(normalUserTwo);
   }
 }
