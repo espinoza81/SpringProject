@@ -13,11 +13,11 @@ VALUES ('Letun of EspinozaDogs', 'M', 1, 2, 0, 0, 0, 0, 70),
        ('Pipin of PirinHill', 'M', 3, 3, 10, 10, 10, 3, 50),
        ('Letun of AdminDogs', 'M', 3, 1, 10, 10, 10, 3, 10);
 
--- INSERT INTO sales (id, price, dog_id)
--- VALUES (1, 200, 2),
---        (2, 100, 3),
---        (3, 150, 5),
---        (4, 250, 6);
+INSERT INTO sales (id, price, dog_id)
+VALUES (1, 200, 2),
+       (2, 100, 3),
+       (3, 150, 5),
+       (4, 250, 6);
 --
 -- INSERT INTO partners (id, price, dog_id, is_active)
 -- VALUES (1, 200, 1, 1),

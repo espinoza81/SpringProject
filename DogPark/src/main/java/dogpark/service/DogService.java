@@ -4,6 +4,7 @@ import dogpark.exeption.ObjectNotFoundException;
 import dogpark.model.dtos.DogDTO;
 import dogpark.model.entity.DogEntity;
 import dogpark.repository.DogRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -47,20 +48,10 @@ public class DogService {
         dogRepository.saveAndFlush(dog);
     }
 
-    public void decreaseDogHealth(Long dogId) {
-        DogEntity dog = getDog(dogId);
-
-        int health = max(dog.getHealth() - HEALTH_DECREASE, 0);
-        dog.setHealth(health);
-
-        dogRepository.saveAndFlush(dog);
-    }
-
     public void getGroomingProcedure(Long dogId) {
         DogEntity dog = getDog(dogId);
 
-        int health = max(dog.getHealth() - HEALTH_DECREASE, 0);
-        dog.setHealth(health);
+        decreaseDogHealth(dog);
 
         int grooming = min(dog.getGrooming() + STATS_INCREASE, dog.getBreedEntity().getGrooming());
         dog.setGrooming(grooming);
@@ -71,8 +62,7 @@ public class DogService {
     public void getAgilityLesson(Long dogId) {
         DogEntity dog = getDog(dogId);
 
-        int health = max(dog.getHealth() - HEALTH_DECREASE, 0);
-        dog.setHealth(health);
+        decreaseDogHealth(dog);
 
         int agility = min(dog.getAgility() + STATS_INCREASE, dog.getBreedEntity().getAgility());
         dog.setAgility(agility);
@@ -83,13 +73,17 @@ public class DogService {
     public void getHuntingLesson(Long dogId) {
         DogEntity dog = getDog(dogId);
 
-        int health = max(dog.getHealth() - HEALTH_DECREASE, 0);
-        dog.setHealth(health);
+        decreaseDogHealth(dog);
 
         int hunting = min(dog.getHunting() + STATS_INCREASE, dog.getBreedEntity().getHunting());
         dog.setHunting(hunting);
 
         dogRepository.saveAndFlush(dog);
+    }
+
+    private static void decreaseDogHealth(@NotNull DogEntity dog) {
+        int health = max(dog.getHealth() - HEALTH_DECREASE, 0);
+        dog.setHealth(health);
     }
 
     private DogEntity getDog(Long dogId) {

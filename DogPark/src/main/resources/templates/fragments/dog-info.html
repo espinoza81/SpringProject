@@ -1,0 +1,19 @@
+<!-- The Modal -->
+<div class="modal" id="myModal" th:fragment = "dog_info(dog)">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Dog Info</h4>
+                <span class="btn-close">&times;</span>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div th:text = "${dog.getSex()}"></div>
+                Modal body..
+            </div>
+        </div>
+    </div>
+</div>
