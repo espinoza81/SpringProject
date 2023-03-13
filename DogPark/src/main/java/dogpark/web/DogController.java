@@ -1,17 +1,21 @@
 package dogpark.web;
 
 import dogpark.exeption.ObjectNotFoundException;
+import dogpark.model.dtos.AddSaleStudDTO;
 import dogpark.model.dtos.DogDTO;
 import dogpark.service.DogService;
 import dogpark.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -28,7 +32,7 @@ public class DogController {
     }
 
     @PreAuthorize("isOwner(#dogId)")
-    @GetMapping("/dog/{id}")
+    @PostMapping("/dog/{id}")
     public String dog(@PathVariable("id") Long dogId,
                       Model model,
                       @AuthenticationPrincipal UserDetails user) {
@@ -92,5 +96,24 @@ public class DogController {
         userService.decreaseLoggedUserMoney(user.getUsername(), "lesson");
 
         return "redirect:/dog/{id}";
+    }
+
+    @PreAuthorize("isOwner(#addSaleDTO.dogId)")
+    @PostMapping("/dog/sale")
+    public String saleSingleDog(@Valid AddSaleStudDTO addSaleDTO,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("addSaleDTO", addSaleDTO);
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.addSaleDTO", bindingResult);
+
+            return "redirect:/market/sale";
+        }
+
+        this.dogService.created(addSaleDTO);
+
+        return "redirect:/market/sale";
     }
 }

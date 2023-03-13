@@ -25,12 +25,13 @@
                         <div th:replace="~{fragments/dog-info::dog_info(dog=${dog})}"></div>
                     </td>
                     <td class="col-md-2 d-flex justify-content-around">
-                        <a th:href="@{/dog/{dogId}(dogId=${dog.id})}">
-                            <button type="submit" class="btn btn-info btn-sm" value="play"
-                                    th:disabled="${dog.isForSale()}">
+                        <form   th:unless="${dog.isForSale()}"
+                                th:method="POST"
+                                th:action="@{/dog/{dogId}(dogId=${dog.id})}">
+                            <button type="submit" class="btn btn-info btn-sm" value="play">
                                 Play
                             </button>
-                        </a>
+                        </form>
                     </td>
                 </tr>
                 </tbody>

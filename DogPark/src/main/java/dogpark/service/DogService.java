@@ -1,9 +1,13 @@
 package dogpark.service;
 
 import dogpark.exeption.ObjectNotFoundException;
+import dogpark.model.dtos.AddSaleStudDTO;
 import dogpark.model.dtos.DogDTO;
+import dogpark.model.dtos.DogWithNameIdDTO;
 import dogpark.model.entity.DogEntity;
+import dogpark.model.entity.SaleEntity;
 import dogpark.repository.DogRepository;
+import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -100,13 +104,34 @@ public class DogService {
                         .orElseThrow(() -> new ObjectNotFoundException("Dog with ID "+ dogId + "not found"));
     }
 
-    public List<DogDTO> getDogsForSale(String username) {
-        return null;
-
+    public List<DogWithNameIdDTO> getDogsNotForSale(String username) {
+        return dogRepository.findAllBySaleIsNullAndOwnerEmailIsLike(username)
+                .stream().map(DogWithNameIdDTO::new)
+                .toList();
     }
 
-    public List<DogDTO> getDogsForStud(String username) {
+    public DogEntity getDogIfForSale(Long dogId) {
+        return dogRepository.findByIdAndSaleIsNull(dogId)
+                .orElseThrow(() -> new ObjectNotFoundException("Dog with ID "+ dogId + "not found or already is for sale"));
+    }
 
-        return null;
+    public void created(@Valid AddSaleStudDTO addSaleDTO) {
+
+        DogEntity dog = dogRepository.findByIdAndSaleIsNull(addSaleDTO.getDogId())
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Dog with ID "+ addSaleDTO.getDogId() + "not found or already is for sale"));
+
+        SaleEntity sale = SaleEntity.builder()
+                .price(addSaleDTO.getPrice())
+                .build();
+
+        dog.setSale(sale);
+        dogRepository.saveAndFlush(dog);
+    }
+
+    public List<DogDTO> getDogsForSale(String username) {
+        return dogRepository.findAllBySaleIsNotNullAndOwnerEmailIsNotLike(username)
+                .stream().map(DogDTO::new)
+                .toList();
     }
 }

@@ -39,7 +39,7 @@ public class DogEntity {
 
     private int awardCup;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private SaleEntity sale;
 
     @OneToMany(fetch = FetchType.EAGER)

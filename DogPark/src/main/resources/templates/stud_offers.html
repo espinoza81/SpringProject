@@ -1,19 +1,45 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/commons::head}"></head>
-
-
+<head th:replace="~{fragments/commons::head}">
+</head>
 <body>
 <header>
-<div th:replace="~{fragments/commons :: navbar}">
-  Navbar
-</div>
+  <div th:replace="~{fragments/commons :: navbar}">
+    Navbar
+  </div>
 
-<div class="container">
-  <h2 class="text-center text-white">Shelter statistics</h2>
-</div>
+  <div class="container">
+    <div class="main-div mb-2">
+      <table class="table table-hover text-judge">
+        <thead>
+        <tr class="row">
+          <th class="col-md-10" scope="col"><h5 class="text-center">Dog name</h5></th>
+          <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="row" th:each="dog : ${dogsForStud}">
+          <td class="col-md-10">
+            <button class="accordion text-left" th:text="${dog.getName()}"></button>
+            <div th:replace="~{fragments/dog-info::dog_info(dog=${dog})}"></div>
+          </td>
+          <td class="col-md-2 d-flex justify-content-around">
+            <form
+                    th:method="POST"
+                    th:action="@{/dog/{dogId}/stud(dogId=${dog.id})}">
+              <button type="submit" class="btn btn-info btn-sm" value="breeding">
+                Breeding
+              </button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </header>
 <footer th:replace="~{fragments/commons::footer}"></footer>
+<script th:src="@{../js/popup.js}"></script>
 </body>
 </html>

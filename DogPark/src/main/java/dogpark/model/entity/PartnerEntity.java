@@ -22,5 +22,5 @@ public class PartnerEntity {
 
     private int price;
 
-    private boolean isActive;
+    private boolean active;
 }

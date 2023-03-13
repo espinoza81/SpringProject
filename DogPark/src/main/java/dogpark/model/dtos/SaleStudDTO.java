@@ -12,7 +12,6 @@ public class SaleStudDTO {
 
     public SaleStudDTO(SaleEntity sale) {
         this.id = sale.getId();
-        this.dog = new DogDTO(sale.getDog());
         this.price = sale.getPrice();
     }
 
