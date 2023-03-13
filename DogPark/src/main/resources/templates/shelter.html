@@ -41,17 +41,19 @@
             <table class="table table-hover text-judge">
                 <thead>
                 <tr class="row">
-                    <th class="col-md-5" scope="col"><h5 class="text-center">Dog name</h5></th>
-                    <th class="col-md-3" scope="col"><h5 class="text-center">Price</h5></th>
+                    <th class="col-md-8" scope="col"><h5 class="text-center">Dog name</h5></th>
+                    <th class="col-md-2" scope="col"><h5 class="text-center">Price</h5></th>
                     <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
-                    <th class="col-md-2" scope="col"><h5 class="text-center">Dog info</h5></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="row" th:each="sale : *{saleOffers}">
 
-                    <td class="col-md-5"><h5 class="text-right" th:text="${sale.getDog().getName()}">Name</h5></td>
-                    <td class="col-md-3"><h5 class="text-right" th:text="${sale.getPrice() + '$'}">100 $</h5></td>
+                    <td class="col-md-8">
+                        <button class="accordion text-left" th:text="${sale.getDog().getName()}"></button>
+                        <div th:replace="~{fragments/dog-info::dog_info(dog=${sale.getDog()})}"></div>
+                    </td>
+                    <td class="col-md-2"><h5 class="text-right" th:text="${sale.getPrice() + '$'}">100 $</h5></td>
                     <td class="col-md-2 d-flex justify-content-around">
                         <form
                                 th:method="POST"
@@ -60,14 +62,6 @@
                                 Delete
                             </button>
                         </form>
-                    </td>
-                    <td class="col-md-2 d-flex justify-content-around">
-                        <!-- Button to Open the Modal -->
-                        <button type="button" id="myBtn" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">
-                            Info
-                        </button>
-                        <!-- The modal body -->
-                        <div th:replace="~{fragments/dog-info::dog_info(dog=${sale.getDog()})}"></div>
                     </td>
                 </tr>
                 </tbody>
@@ -79,16 +73,17 @@
             <table class="table table-hover text-judge">
                 <thead>
                 <tr class="row">
-                    <th class="col-md-7" scope="col"><h5 class="text-center" >Dog name</h5></th>
-                    <th class="col-md-5" scope="col"><h5 class="text-center" >Price</h5></th>
+                    <th class="col-md-10" scope="col"><h5 class="text-center" >Dog name</h5></th>
+                    <th class="col-md-2" scope="col"><h5 class="text-center" >Price</h5></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="row"  th:each="stud : *{studOffers}">
-                    <td class="col-md-7">
-                        <h5 class="text-right" th:text="${stud.getDog().getName()}">Name</h5>
+                    <td class="col-md-10">
+                        <button class="accordion text-left" th:text="${stud.getDog().getName()}"></button>
+                        <div th:replace="~{fragments/dog-info::dog_info(dog=${stud.getDog()})}"></div>
                     </td>
-                    <td class="col-md-5"><h5 class="text-right" th:text="${stud.getPrice() + '$'}">100 $</h5></td>
+                    <td class="col-md-2"><h5 class="text-right" th:text="${stud.getPrice() + '$'}">100 $</h5></td>
                 </tr>
                 </tbody>
             </table>

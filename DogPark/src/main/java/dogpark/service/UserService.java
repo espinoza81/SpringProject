@@ -1,6 +1,7 @@
 package dogpark.service;
 
 import dogpark.exeption.ObjectNotFoundException;
+import dogpark.model.dtos.DogDTO;
 import dogpark.model.dtos.ShelterDTO;
 import dogpark.model.dtos.UserRegistrationDTO;
 import dogpark.model.entity.UserEntity;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 @Service
@@ -81,5 +83,15 @@ public class UserService {
                 .findUserEntityByEmail(email)
                 .map(ShelterDTO::new)
                 .orElseThrow(() -> new ObjectNotFoundException("User with email " + email + "not found"));
+    }
+
+    @Transactional
+    public List<DogDTO> getMyDogs(String email) {
+        return userRepository
+                .findUserEntityByEmail(email)
+                .orElseThrow(() -> new ObjectNotFoundException("User with email " + email + "not found"))
+                .getDogs()
+                .stream().map(DogDTO::new)
+                .toList();
     }
 }

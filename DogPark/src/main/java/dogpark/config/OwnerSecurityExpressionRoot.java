@@ -27,7 +27,7 @@ public class OwnerSecurityExpressionRoot
             return false;
         }
 
-        var userName = authentication.getName();
+        String userName = authentication.getName();
 
         return dogService.isOwner(userName, id);
     }

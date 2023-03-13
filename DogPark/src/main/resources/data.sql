@@ -18,7 +18,13 @@ VALUES (1, 200, 1),
        (2, 100, 2),
        (3, 150, 5),
        (4, 250, 7);
---
+
+-- UPDATE dog
+--      SET sale_id = 1 WHERE id = 1;
+--         (sale_id = 2 WHERE id = 2),
+--         (sale_id = 3 WHERE id = 5),
+--         (sale_id = 4 WHERE id = 7);
+
 -- INSERT INTO partners (id, price, dog_id, is_active)
 -- VALUES (1, 200, 1, 1),
 --        (2, 100, 1, 1),

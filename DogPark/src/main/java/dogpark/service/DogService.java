@@ -7,6 +7,7 @@ import dogpark.repository.DogRepository;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Math.max;
@@ -35,6 +36,14 @@ public class DogService {
         return dogRepository.
                 findById(dogId).
                 filter(o -> o.getOwner().getEmail().equals(userName)).
+                isPresent();
+    }
+
+    public boolean isForSale(Long dogId) {
+
+        return dogRepository.
+                findById(dogId).
+                filter(o -> o.getSale()!=null).
                 isPresent();
     }
 
@@ -89,5 +98,15 @@ public class DogService {
     private DogEntity getDog(Long dogId) {
          return dogRepository.findById(dogId)
                         .orElseThrow(() -> new ObjectNotFoundException("Dog with ID "+ dogId + "not found"));
+    }
+
+    public List<DogDTO> getDogsForSale(String username) {
+        return null;
+
+    }
+
+    public List<DogDTO> getDogsForStud(String username) {
+
+        return null;
     }
 }

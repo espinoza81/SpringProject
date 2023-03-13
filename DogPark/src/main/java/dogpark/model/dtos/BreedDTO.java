@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class BreedDTO {
+    private String name;
     private String imgURL;
 
     private int grooming;
@@ -18,5 +19,6 @@ public class BreedDTO {
         this.grooming = breed.getGrooming();
         this.hunting = breed.getHunting();
         this.agility = breed.getAgility();
+        this.name = breed.getName();
     }
 }

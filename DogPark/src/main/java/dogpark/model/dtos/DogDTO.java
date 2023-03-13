@@ -16,6 +16,7 @@ public class DogDTO {
 
     private int agility;
     private int health;
+    private boolean isForSale;
 
     public DogDTO(DogEntity dog) {
         this.id = dog.getId();
@@ -26,5 +27,6 @@ public class DogDTO {
         this.hunting = dog.getHunting();
         this.agility = dog.getAgility();
         this.health = dog.getHealth();
+        this.isForSale = dog.getSale() != null;
     }
 }
