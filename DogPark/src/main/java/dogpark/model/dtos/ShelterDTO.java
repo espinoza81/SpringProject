@@ -19,7 +19,7 @@ public class ShelterDTO {
     private final int money;
 
     private final List<SaleStudDTO> studOffers;
-    private final List<DogDTO> saleOffers;
+    private final List<DogWithPriceDTO> saleOffers;
 
     public ShelterDTO(UserEntity user) {
         this.name = user.getShelterName();
@@ -42,7 +42,7 @@ public class ShelterDTO {
 
         this.saleOffers = user.getDogs().stream()
                 .filter(dog -> dog.getSale()!=null)
-                .map(DogDTO::new)
+                .map(DogWithPriceDTO::new)
                 .toList();
 
         this.studOffers = new ArrayList<>();

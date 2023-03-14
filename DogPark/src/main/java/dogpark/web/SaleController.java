@@ -38,7 +38,7 @@ public class SaleController {
     public String dogsForSale(Model model,
                        @AuthenticationPrincipal UserDetails user) {
 
-        List<DogDTO> dogsForSale = dogService.getDogsForSale(user.getUsername());
+        List<DogWithPriceDTO> dogsForSale = dogService.getDogsForSale(user.getUsername());
         List<DogWithNameIdDTO> dogsOwnerForSale = this.dogService.getDogsNotForSale(user.getUsername());
 
         model.addAttribute("dogsForSale", dogsForSale);
@@ -47,4 +47,22 @@ public class SaleController {
         return "sale_offers";
     }
 
+    @PreAuthorize("isOwner(#addSaleDTO.dogId)")
+    @PostMapping("/dog/sale")
+    public String saleSingleDog(@Valid AddSaleStudDTO addSaleDTO,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+
+        if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("addSaleDTO", addSaleDTO);
+            redirectAttributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.addSaleDTO", bindingResult);
+
+            return "redirect:/market/sale";
+        }
+
+        this.dogService.createdSale(addSaleDTO);
+
+        return "redirect:/market/sale";
+    }
 }

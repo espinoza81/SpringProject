@@ -2,7 +2,7 @@ package dogpark.web;
 
 import dogpark.exeption.ObjectNotFoundException;
 import dogpark.model.dtos.AddSaleStudDTO;
-import dogpark.model.dtos.DogDTO;
+import dogpark.model.dtos.DogWithPriceDTO;
 import dogpark.service.DogService;
 import dogpark.service.UserService;
 import jakarta.validation.Valid;
@@ -32,12 +32,12 @@ public class DogController {
     }
 
     @PreAuthorize("isOwner(#dogId)")
-    @PostMapping("/dog/{id}")
+    @GetMapping("/dog/{id}")
     public String dog(@PathVariable("id") Long dogId,
                       Model model,
                       @AuthenticationPrincipal UserDetails user) {
 
-        DogDTO dog = dogService.getDogInfoById(dogId).
+        DogWithPriceDTO dog = dogService.getDogInfoById(dogId).
                 orElseThrow(() -> new ObjectNotFoundException("Dog with ID "+ dogId + "not found"));
 
         int money = userService.getMoney(user.getUsername());
@@ -48,6 +48,7 @@ public class DogController {
         return "dog";
     }
 
+    @PreAuthorize("isOwner(#dogId)")
     @PostMapping("/dog/{id}/food")
     public String dogFood(@PathVariable("id") Long dogId,
                           @AuthenticationPrincipal UserDetails user){
@@ -58,6 +59,7 @@ public class DogController {
         return "redirect:/dog/{id}";
     }
 
+    @PreAuthorize("isOwner(#dogId)")
     @PostMapping("/dog/{id}/treat")
     public String dogGiveTreat(@PathVariable("id") Long dogId,
                           @AuthenticationPrincipal UserDetails user){
@@ -68,6 +70,7 @@ public class DogController {
         return "redirect:/dog/{id}";
     }
 
+    @PreAuthorize("isOwner(#dogId)")
     @PostMapping("/dog/{id}/grooming")
     public String giveGrooming(@PathVariable("id") Long dogId,
                                @AuthenticationPrincipal UserDetails user){
@@ -78,6 +81,7 @@ public class DogController {
         return "redirect:/dog/{id}";
     }
 
+    @PreAuthorize("isOwner(#dogId)")
     @PostMapping("/dog/{id}/hunting")
     public String getHuntingLesson(@PathVariable("id") Long dogId,
                                @AuthenticationPrincipal UserDetails user){
@@ -88,6 +92,7 @@ public class DogController {
         return "redirect:/dog/{id}";
     }
 
+    @PreAuthorize("isOwner(#dogId)")
     @PostMapping("/dog/{id}/agility")
     public String getAgilityLesson(@PathVariable("id") Long dogId,
                                @AuthenticationPrincipal UserDetails user){
@@ -96,24 +101,5 @@ public class DogController {
         userService.decreaseLoggedUserMoney(user.getUsername(), "lesson");
 
         return "redirect:/dog/{id}";
-    }
-
-    @PreAuthorize("isOwner(#addSaleDTO.dogId)")
-    @PostMapping("/dog/sale")
-    public String saleSingleDog(@Valid AddSaleStudDTO addSaleDTO,
-                                BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) {
-
-        if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("addSaleDTO", addSaleDTO);
-            redirectAttributes.addFlashAttribute(
-                    "org.springframework.validation.BindingResult.addSaleDTO", bindingResult);
-
-            return "redirect:/market/sale";
-        }
-
-        this.dogService.created(addSaleDTO);
-
-        return "redirect:/market/sale";
     }
 }

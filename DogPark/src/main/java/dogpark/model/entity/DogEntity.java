@@ -42,9 +42,13 @@ public class DogEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private SaleEntity sale;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PartnerEntity> studOffers;
 
     @ManyToOne
     private UserEntity owner;
+
+    public void addStudOffer(PartnerEntity studOffer){
+        this.studOffers.add(studOffer);
+    }
 }

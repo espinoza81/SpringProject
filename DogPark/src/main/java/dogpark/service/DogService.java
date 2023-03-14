@@ -2,11 +2,15 @@ package dogpark.service;
 
 import dogpark.exeption.ObjectNotFoundException;
 import dogpark.model.dtos.AddSaleStudDTO;
-import dogpark.model.dtos.DogDTO;
+import dogpark.model.dtos.DogWithPriceDTO;
 import dogpark.model.dtos.DogWithNameIdDTO;
 import dogpark.model.entity.DogEntity;
+import dogpark.model.entity.PartnerEntity;
 import dogpark.model.entity.SaleEntity;
+import dogpark.model.enums.SexEnum;
 import dogpark.repository.DogRepository;
+import dogpark.repository.PartnerRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -24,15 +28,18 @@ public class DogService {
     private static final int STATS_INCREASE = 10;
 
     private final DogRepository dogRepository;
+    private final PartnerRepository partnerRepository;
 
-    public DogService(DogRepository dogRepository) {
+    public DogService(DogRepository dogRepository,
+                      PartnerRepository partnerRepository) {
         this.dogRepository = dogRepository;
+        this.partnerRepository = partnerRepository;
     }
 
-    public Optional<DogDTO> getDogInfoById(Long dogId) {
+    public Optional<DogWithPriceDTO> getDogInfoById(Long dogId) {
 
         return dogRepository.findById(dogId).
-                map(DogDTO::new);
+                map(DogWithPriceDTO::new);
     }
 
     public boolean isOwner(String userName, Long dogId) {
@@ -115,7 +122,7 @@ public class DogService {
                 .orElseThrow(() -> new ObjectNotFoundException("Dog with ID "+ dogId + "not found or already is for sale"));
     }
 
-    public void created(@Valid AddSaleStudDTO addSaleDTO) {
+    public void createdSale(@Valid AddSaleStudDTO addSaleDTO) {
 
         DogEntity dog = dogRepository.findByIdAndSaleIsNull(addSaleDTO.getDogId())
                 .orElseThrow(() ->
@@ -129,9 +136,37 @@ public class DogService {
         dogRepository.saveAndFlush(dog);
     }
 
-    public List<DogDTO> getDogsForSale(String username) {
+    public List<DogWithPriceDTO> getDogsForSale(String username) {
         return dogRepository.findAllBySaleIsNotNullAndOwnerEmailIsNotLike(username)
-                .stream().map(DogDTO::new)
+                .stream().map(DogWithPriceDTO::new)
+                .toList();
+    }
+
+
+    @Transactional
+    public void createdStud(@Valid AddSaleStudDTO addStudDTO) {
+
+        DogEntity dog = dogRepository.findByIdAndSexEquals(addStudDTO.getDogId(), SexEnum.M)
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Dog with ID "+ addStudDTO.getDogId() + "not found or her sex is F"));
+
+        PartnerEntity studOffer = PartnerEntity.builder()
+                .price(addStudDTO.getPrice())
+                .dog(dog)
+                .active(true)
+                .build();
+
+        dog.addStudOffer(studOffer);
+
+        dogRepository.saveAndFlush(dog);
+
+
+    }
+
+    public List<DogWithNameIdDTO> getDogsSexM(String username) {
+        return dogRepository.findAllByOwnerEmailIsLikeAndSexEquals(username, SexEnum.M)
+                .stream()
+                .map(DogWithNameIdDTO::new)
                 .toList();
     }
 }

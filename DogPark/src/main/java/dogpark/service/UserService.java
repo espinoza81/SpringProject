@@ -1,7 +1,7 @@
 package dogpark.service;
 
 import dogpark.exeption.ObjectNotFoundException;
-import dogpark.model.dtos.DogDTO;
+import dogpark.model.dtos.DogWithPriceDTO;
 import dogpark.model.dtos.ShelterDTO;
 import dogpark.model.dtos.UserRegistrationDTO;
 import dogpark.model.entity.UserEntity;
@@ -86,12 +86,12 @@ public class UserService {
     }
 
     @Transactional
-    public List<DogDTO> getMyDogs(String email) {
+    public List<DogWithPriceDTO> getMyDogs(String email) {
         return userRepository
                 .findUserEntityByEmail(email)
                 .orElseThrow(() -> new ObjectNotFoundException("User with email " + email + "not found"))
                 .getDogs()
-                .stream().map(DogDTO::new)
+                .stream().map(DogWithPriceDTO::new)
                 .toList();
     }
 }

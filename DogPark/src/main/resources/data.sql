@@ -13,11 +13,11 @@ VALUES ('Letun of EspinozaDogs', 'M', 1, 2, 0, 0, 0, 0, 70),
        ('Pipin of PirinHill', 'M', 3, 3, 10, 10, 10, 3, 50),
        ('Letun of AdminDogs', 'M', 3, 1, 10, 10, 10, 3, 10);
 
-INSERT INTO sales (id, price, dog_id)
-VALUES (1, 200, 1),
-       (2, 100, 2),
-       (3, 150, 5),
-       (4, 250, 7);
+INSERT INTO sales (id, price)
+VALUES (1, 200),
+       (2, 100),
+       (3, 150),
+       (4, 250);
 
 -- UPDATE dog
 --      SET sale_id = 1 WHERE id = 1;

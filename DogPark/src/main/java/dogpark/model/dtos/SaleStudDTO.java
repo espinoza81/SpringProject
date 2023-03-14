@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class SaleStudDTO {
     private Long id;
-    private DogDTO dog;
+    private DogWithPriceDTO dog;
     private int price;
 
     public SaleStudDTO(SaleEntity sale) {
@@ -17,7 +17,7 @@ public class SaleStudDTO {
 
     public SaleStudDTO(PartnerEntity stud) {
         this.id = stud.getId();
-        this.dog = new DogDTO(stud.getDog());
+        this.dog = new DogWithPriceDTO(stud.getDog());
         this.price = stud.getPrice();
     }
 }

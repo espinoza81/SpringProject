@@ -1,6 +1,6 @@
 package dogpark.web;
 
-import dogpark.model.dtos.DogDTO;
+import dogpark.model.dtos.DogWithPriceDTO;
 import dogpark.model.dtos.ShelterDTO;
 import dogpark.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,7 +40,7 @@ public class UserController {
   public String dogs(Model model,
                      @AuthenticationPrincipal UserDetails user) {
 
-    List<DogDTO> myDogs = userService.getMyDogs(user.getUsername());
+    List<DogWithPriceDTO> myDogs = userService.getMyDogs(user.getUsername());
 
     model.addAttribute("myDogs", myDogs);
 

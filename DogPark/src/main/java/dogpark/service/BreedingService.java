@@ -15,7 +15,7 @@ public class BreedingService {
     }
 
     public List<SaleStudDTO> getDogsForStud() {
-        return partnerRepository.findAllByActiveTrue()
+        return partnerRepository.findAllByActive(true)
                 .stream().map(SaleStudDTO::new)
                 .toList();
     }
