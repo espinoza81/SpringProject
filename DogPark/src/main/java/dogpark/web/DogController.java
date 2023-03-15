@@ -1,29 +1,24 @@
 package dogpark.web;
 
 import dogpark.exeption.ObjectNotFoundException;
-import dogpark.model.dtos.AddSaleStudDTO;
 import dogpark.model.dtos.DogWithPriceDTO;
 import dogpark.service.DogService;
 import dogpark.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 
 @Controller
 public class DogController {
     private final DogService dogService;
     private final UserService userService;
-    private static final int FOOD_HEALTH_INCREASE = 20;
-    private static final int TREAT_HEALTH_INCREASE = 40;
 
     public DogController(DogService dogService,
                          UserService userService) {
@@ -53,8 +48,9 @@ public class DogController {
     public String dogFood(@PathVariable("id") Long dogId,
                           @AuthenticationPrincipal UserDetails user){
 
-        dogService.increaseDogHealth(dogId, FOOD_HEALTH_INCREASE);
-        userService.decreaseLoggedUserMoney(user.getUsername(), "food");
+        //TODO: check if user have enough money
+
+        dogService.giveFood(dogId);
 
         return "redirect:/dog/{id}";
     }
@@ -64,8 +60,9 @@ public class DogController {
     public String dogGiveTreat(@PathVariable("id") Long dogId,
                           @AuthenticationPrincipal UserDetails user){
 
-        dogService.increaseDogHealth(dogId, TREAT_HEALTH_INCREASE);
-        userService.decreaseLoggedUserMoney(user.getUsername(), "treat");
+        //TODO: check if user have enough money
+
+        dogService.giveTreat(dogId);
 
         return "redirect:/dog/{id}";
     }
@@ -75,8 +72,9 @@ public class DogController {
     public String giveGrooming(@PathVariable("id") Long dogId,
                                @AuthenticationPrincipal UserDetails user){
 
+        //TODO: check if user have enough money, dog have enough health and stats not max
+
         dogService.getGroomingProcedure(dogId);
-        userService.decreaseLoggedUserMoney(user.getUsername(), "lesson");
 
         return "redirect:/dog/{id}";
     }
@@ -86,8 +84,9 @@ public class DogController {
     public String getHuntingLesson(@PathVariable("id") Long dogId,
                                @AuthenticationPrincipal UserDetails user){
 
+        //TODO: check if user have enough money, dog have enough health and stats not max
+
         dogService.getHuntingLesson(dogId);
-        userService.decreaseLoggedUserMoney(user.getUsername(), "lesson");
 
         return "redirect:/dog/{id}";
     }
@@ -97,8 +96,9 @@ public class DogController {
     public String getAgilityLesson(@PathVariable("id") Long dogId,
                                @AuthenticationPrincipal UserDetails user){
 
+        //TODO: check if user have enough money, dog have enough health and stats not max
+
         dogService.getAgilityLesson(dogId);
-        userService.decreaseLoggedUserMoney(user.getUsername(), "lesson");
 
         return "redirect:/dog/{id}";
     }

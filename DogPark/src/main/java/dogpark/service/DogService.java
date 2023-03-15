@@ -1,5 +1,6 @@
 package dogpark.service;
 
+import dogpark.exeption.NoEnoughResourceException;
 import dogpark.exeption.ObjectNotFoundException;
 import dogpark.model.dtos.AddSaleStudDTO;
 import dogpark.model.dtos.DogWithPriceDTO;
@@ -7,9 +8,10 @@ import dogpark.model.dtos.DogWithNameIdDTO;
 import dogpark.model.entity.DogEntity;
 import dogpark.model.entity.PartnerEntity;
 import dogpark.model.entity.SaleEntity;
+import dogpark.model.entity.UserEntity;
 import dogpark.model.enums.SexEnum;
 import dogpark.repository.DogRepository;
-import dogpark.repository.PartnerRepository;
+import dogpark.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
@@ -24,16 +26,22 @@ import static java.lang.Math.min;
 @Service
 public class DogService {
 
+    private static final int FOOD_PRICE = 20;
+    private static final int LESSON_PRICE = 20;
+    private static final int TREAT_PRICE = 30;
     private static final int HEALTH_DECREASE = 10;
+    private static final int FOOD_HEALTH_INCREASE = 20;
+    private static final int TREAT_HEALTH_INCREASE = 40;
     private static final int STATS_INCREASE = 10;
 
     private final DogRepository dogRepository;
-    private final PartnerRepository partnerRepository;
+    private final UserRepository userRepository;;
+
 
     public DogService(DogRepository dogRepository,
-                      PartnerRepository partnerRepository) {
+                      UserRepository userRepository) {
         this.dogRepository = dogRepository;
-        this.partnerRepository = partnerRepository;
+        this.userRepository = userRepository;
     }
 
     public Optional<DogWithPriceDTO> getDogInfoById(Long dogId) {
@@ -59,44 +67,79 @@ public class DogService {
     }
 
 
-    public void increaseDogHealth(Long dogId, int healthIncrease) {
-        DogEntity dog = getDog(dogId);
+    public void increaseDogHealth(@NotNull DogEntity dog, int healthIncrease) {
 
         int health = min(dog.getHealth() + healthIncrease, 100);
         dog.setHealth(health);
-
-        dogRepository.saveAndFlush(dog);
     }
 
+    @Transactional
     public void getGroomingProcedure(Long dogId) {
         DogEntity dog = getDog(dogId);
+
+        checkHaveEnoughMoney(dog, LESSON_PRICE);
+        checkHaveEnoughHealth(dog);
+        checkStatsNotMax(dog.getGrooming(), dog.getBreedEntity().getGrooming());
 
         decreaseDogHealth(dog);
 
         int grooming = min(dog.getGrooming() + STATS_INCREASE, dog.getBreedEntity().getGrooming());
         dog.setGrooming(grooming);
 
+        payForProcedure(dog, LESSON_PRICE);
+
         dogRepository.saveAndFlush(dog);
     }
 
+    private void checkStatsNotMax(int dogStat, int breedStat) {
+        if(dogStat == breedStat){
+            throw new NoEnoughResourceException("The dog has reached the max of the stats");
+        }
+    }
+
+    private void checkHaveEnoughHealth(@NotNull DogEntity dog) {
+        if(dog.getHealth() < HEALTH_DECREASE) {
+            throw new NoEnoughResourceException("The health of dog is too low");
+        }
+    }
+
+
+    private static void payForProcedure(@NotNull DogEntity dog, int price) {
+        dog.getOwner().spendMoney(price);
+    }
+
+    @Transactional
     public void getAgilityLesson(Long dogId) {
         DogEntity dog = getDog(dogId);
+
+        checkHaveEnoughMoney(dog, LESSON_PRICE);
+        checkHaveEnoughHealth(dog);
+        checkStatsNotMax(dog.getAgility(), dog.getBreedEntity().getAgility());
 
         decreaseDogHealth(dog);
 
         int agility = min(dog.getAgility() + STATS_INCREASE, dog.getBreedEntity().getAgility());
         dog.setAgility(agility);
 
+        payForProcedure(dog, LESSON_PRICE);
+
         dogRepository.saveAndFlush(dog);
     }
 
+    @Transactional
     public void getHuntingLesson(Long dogId) {
         DogEntity dog = getDog(dogId);
+
+        checkHaveEnoughMoney(dog, LESSON_PRICE);
+        checkHaveEnoughHealth(dog);
+        checkStatsNotMax(dog.getHunting(), dog.getBreedEntity().getHunting());
 
         decreaseDogHealth(dog);
 
         int hunting = min(dog.getHunting() + STATS_INCREASE, dog.getBreedEntity().getHunting());
         dog.setHunting(hunting);
+
+        payForProcedure(dog, LESSON_PRICE);
 
         dogRepository.saveAndFlush(dog);
     }
@@ -122,7 +165,7 @@ public class DogService {
                 .orElseThrow(() -> new ObjectNotFoundException("Dog with ID "+ dogId + "not found or already is for sale"));
     }
 
-    public void createdSale(@Valid AddSaleStudDTO addSaleDTO) {
+    public void createdSale(@Valid @NotNull AddSaleStudDTO addSaleDTO) {
 
         DogEntity dog = dogRepository.findByIdAndSaleIsNull(addSaleDTO.getDogId())
                 .orElseThrow(() ->
@@ -144,7 +187,7 @@ public class DogService {
 
 
     @Transactional
-    public void createdStud(@Valid AddSaleStudDTO addStudDTO) {
+    public void createdStud(@Valid @NotNull AddSaleStudDTO addStudDTO) {
 
         DogEntity dog = dogRepository.findByIdAndSexEquals(addStudDTO.getDogId(), SexEnum.M)
                 .orElseThrow(() ->
@@ -168,5 +211,66 @@ public class DogService {
                 .stream()
                 .map(DogWithNameIdDTO::new)
                 .toList();
+    }
+
+    public void bueDog(Long dogId, String email) {
+        DogEntity dog = getDog(dogId);
+        UserEntity user = userRepository.findUserEntityByEmail(email).
+                orElseThrow(() -> new ObjectNotFoundException("User with email "+ email + "not found"));
+
+        int price = dog.getSale().getPrice();
+
+        UserEntity seller = dog.getOwner();
+
+        dog.setOwner(user);
+        dog.setSale(null);
+        //TODO: must delete sale?
+        user.spendMoney(price);
+        seller.addMoney(price);
+
+        dogRepository.saveAndFlush(dog);
+        userRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(seller);
+
+    }
+
+    @Transactional
+    public void giveFood(Long dogId) {
+        DogEntity dog = getDog(dogId);
+
+        checkHaveEnoughMoney(dog, FOOD_PRICE);
+        checkHealthNotMax(dog);
+
+        increaseDogHealth(dog, FOOD_HEALTH_INCREASE);
+
+        payForProcedure(dog, FOOD_PRICE);
+
+        dogRepository.saveAndFlush(dog);
+    }
+
+    private void checkHealthNotMax(@NotNull DogEntity dog) {
+        if(dog.getHealth() == 100) {
+            throw new NoEnoughResourceException("The is on max health!");
+        }
+    }
+
+    @Transactional
+    public void giveTreat(Long dogId) {
+        DogEntity dog = getDog(dogId);
+
+        checkHaveEnoughMoney(dog, TREAT_PRICE);
+        checkHealthNotMax(dog);
+
+        increaseDogHealth(dog, TREAT_HEALTH_INCREASE);
+
+        payForProcedure(dog, TREAT_PRICE);
+
+        dogRepository.saveAndFlush(dog);
+    }
+
+    public void checkHaveEnoughMoney(@NotNull DogEntity dog, int price){
+        if(dog.getOwner().getMoney() < price){
+            throw new NoEnoughResourceException("You do not have enough money!");
+        }
     }
 }

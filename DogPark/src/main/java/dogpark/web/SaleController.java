@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,6 +63,18 @@ public class SaleController {
         }
 
         this.dogService.createdSale(addSaleDTO);
+
+        return "redirect:/market/sale";
+    }
+
+    @PreAuthorize("!isOwner(#dogId)")
+    @PostMapping("/dog/{dogId}/sale")
+    public String byeDog(@PathVariable("dogId") Long dogId,
+                                   @AuthenticationPrincipal UserDetails user){
+
+        //TODO: check if user have enough money and dog is for sale
+
+        dogService.bueDog(dogId, user.getUsername());
 
         return "redirect:/market/sale";
     }
