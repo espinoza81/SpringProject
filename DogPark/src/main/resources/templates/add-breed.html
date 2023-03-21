@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/commons::head}"></head>
+
+
+<body>
+<header>
+    <div th:replace="~{fragments/commons :: navbar}">
+        Navbar
+    </div>
+
+    <div class="container">
+        <h2 class="text-center text-white">Add a new breed</h2>
+        <form
+                th:action="@{/breeds/add}"
+                th:method="POST"
+                th:object="${addBreedDTO}"
+                class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 mb-3" >
+                    <label for="name" class="text-white font-weight-bold">Name</label>
+                    <input
+                            th:field="*{name}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="name"
+                            name="name"
+                            type="text"
+                            class="form-control"
+                            placeholder="Breed name"/>
+                    <small th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"
+                           class="text-danger">
+                        Name error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="imgURL" class="text-white font-weight-bold">Image URL</label>
+                    <input
+                            th:field="*{imgURL}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="imgURL"
+                            name="imgURL"
+                            type="text"
+                            class="form-control"
+                            placeholder="Image URL"/>
+                    <small th:if="${#fields.hasErrors('imgURL')}" th:errorclass="error" th:errors="*{imgURL}"
+                           class="text-danger">
+                        Image URL error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="description" class="text-white font-weight-bold">Description</label>
+                    <textarea
+                            th:field="*{description}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            type="text"
+                            class="form-control"
+                            id="description"
+                            name="description"
+                            placeholder="Description of the breed">
+                    </textarea>
+                    <small th:if="${#fields.hasErrors('description')}" th:errorclass="error" th:errors="*{description}"
+                           class="text-danger"></small>
+                </div>
+
+                <div class="col-md-10 mb-3">
+                    <label for="grooming" class="text-white font-weight-bold">Grooming stats</label>
+                    <input
+                            th:field="*{grooming}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            type="number"
+                            step="1"
+                            class="form-control"
+                            id="grooming"
+                            name="grooming"/>
+                    <small th:if="${#fields.hasErrors('grooming')}" th:errorclass="error" th:errors="*{grooming}"
+                           class="text-danger"></small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="agility" class="text-white font-weight-bold">Agility stats</label>
+                    <input
+                            th:field="*{agility}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            type="number"
+                            step="1"
+                            class="form-control"
+                            id="agility"
+                            name="agility"/>
+                    <small th:if="${#fields.hasErrors('agility')}" th:errorclass="error" th:errors="*{agility}"
+                           class="text-danger"></small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="hunting" class="text-white font-weight-bold">Hunting stats</label>
+                    <input
+                            th:field="*{hunting}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            type="number"
+                            step="1"
+                            class="form-control"
+                            id="hunting"
+                            name="hunting"/>
+                    <small th:if="${#fields.hasErrors('hunting')}" th:errorclass="error" th:errors="*{hunting}"
+                           class="text-danger"></small>
+                </div>
+
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="button-holder col-md-4">
+                    <button type="submit" class="btn btn-info btn-lg" value="Add breed">Add breed</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</header>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<div class="panel" th:fragment="dog_info(dog)">
+    <div class="row">
+        <div class="col-4">Breed: </div>
+        <div class="text-right col-8" th:text="${dog.breed.name}"></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Sex: </div>
+        <div class="text-right col-8" th:text="${dog.sex}"></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Grooming stats: </div>
+        <div class="text-right col-8" th:text="${dog.grooming + '/' + dog.breed.grooming}"></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Hunting stats: </div>
+        <div class="text-right col-8" th:text="${dog.hunting + '/' + dog.breed.hunting}"></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Agility stats: </div>
+        <div class="text-right col-8" th:text="${dog.agility + '/' + dog.breed.agility}"></div>
+    </div>
+</div>
