@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/commons::head}"></head>
+
+
+<body>
+<header>
+    <div th:replace="~{fragments/commons :: navbar}">
+        Navbar
+    </div>
+
+    <div class="container">
+        <h2 class="text-center text-white">Register User</h2>
+        <form
+                th:action="@{/users/register}"
+                th:method="POST"
+                th:object="${registrationDTO}"
+                class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 mb-3">
+                    <label for="username" class="text-white font-weight-bold">Username</label>
+                    <input
+                            th:field="*{username}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="username"
+                            name="username"
+                            type="text"
+                            class="form-control"
+                            placeholder="Username"/>
+                    <small th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}"
+                           class="text-danger">
+                        Username error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="email" class="text-white font-weight-bold">Email</label>
+                    <input
+                            th:field="*{email}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="email"
+                            name="email"
+                            type="text"
+                            class="form-control"
+                            placeholder="Email"/>
+                    <small th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"
+                           class="text-danger">
+                        Email error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="shelterName" class="text-white font-weight-bold">Shelter name</label>
+                    <input
+                            th:field="*{shelterName}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="shelterName"
+                            name="shelterName"
+                            type="text"
+                            class="form-control"
+                            placeholder="Shelter name"/>
+                    <small th:if="${#fields.hasErrors('shelterName')}" th:errorclass="error" th:errors="*{shelterName}"
+                           class="text-danger">
+                        Shelter name error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="password" class="text-white font-weight-bold">Password</label>
+                    <input
+                            th:field="*{password}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="password"
+                            name="password"
+                            type="password"
+                            class="form-control"
+                            placeholder="Password"/>
+                    <small th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"
+                           class="text-danger">
+                        Password error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="confirmPassword" class="text-white font-weight-bold">Confirm password</label>
+                    <input
+                            th:field="*{confirmPassword}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type="password"
+                            class="form-control"
+                            placeholder="Confirm password"/>
+                    <small th:if="${#fields.hasErrors('confirmPassword')}" th:errorclass="error"
+                           th:errors="*{confirmPassword}"
+                           class="text-danger">
+                        Confirm password error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="dogName" class="text-white font-weight-bold">Your first dog name</label>
+                    <input
+                            th:field="*{dogName}"
+                            th:errorclass="'is-invalid alert-danger'"
+                            id="dogName"
+                            name="dogName"
+                            type="text"
+                            class="form-control"
+                            placeholder="dogName"/>
+                    <small th:if="${#fields.hasErrors('dogName')}" th:errorclass="error" th:errors="*{dogName}"
+                           class="text-danger">
+                        Dog name error!
+                    </small>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label class="text-white font-weight-bold">Choose your dog sex</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input checked type="radio"
+                                   th:field="*{sex}"
+                                   name="sex"
+                                   th:value="${sexM}">
+                            <span class="text-light"
+                                  th:text="${sexM}"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="radio"
+                                   name="sex"
+                                   th:field="*{sex}"
+                                   th:value="${sexF}">
+                            <span class="text-light"
+                                  th:text="${sexF}"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <small th:if="${#fields.hasErrors('sex')}" th:errorclass="error" th:errors="*{sex}"
+                               class="text-danger">
+                            Dog sex error
+                        </small>
+                    </div>
+                </div>
+                <div class="col-md-10 mb-3">
+                    <label for="breed" class="text-white font-weight-bold">Choose a breed</label>
+                    <select
+                            th:field="*{breed}"
+                            th:errorclass="is-invalid"
+                            class="browser-default custom-select"
+                            id="breed"
+                            name="breed">
+                        <option value="">Select breed</option>
+                        <option th:each="breedName: ${breeds}" th:value="${breedName}" th:text="${breedName}"></option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('breed')}" th:errorclass="error" th:errors="*{breed}"
+                           class="text-danger">
+                        Breed error
+                    </small>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="button-holder col-md-4">
+                    <button type="submit" class="btn btn-info btn-lg" value="account">Create account</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</header>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>
