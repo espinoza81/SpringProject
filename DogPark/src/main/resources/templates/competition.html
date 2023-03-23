@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}">
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/commons :: navbar}">
+        Navbar
+    </div>
+    <div class="container">
+        <h5 class="text-center text-white">Enter your dog in a race</h5>
+        <form
+                th:action="@{/competition}"
+                th:method="POST"
+                th:object="${participantDTO}"
+                class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+            <div class="row d-flex justify-content-center mb-3">
+                <div class="col-md-10">
+                    <div class="mb-1 text-white">Select one of your dogs</div>
+                    <select class="form-select mt-3" aria-label="Default select example" th:field="*{dogId}">
+                        <option value="0" selected>Select one of your dogs</option>
+                        <option th:each="dog: ${dogsOwner}" th:value="${dog.getId()}" th:text="${dog.getName()}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center text-center">
+                <div class="button-holder col-md-4">
+                    <button type="submit" class="btn btn-info btn-lg" value="enter">Enter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="main-div mb-2 justify-content-center">
+            <hr class="hr-2 bg-judge">
+            <h4 class="text-judge text-center">Dogs enrolled for the competition</h4>
+            <hr class="hr-2 bg-judge">
+            <div class="row d-flex justify-content-center" th:each="dog : ${dogsEnrolled}">
+                <div class="col-1 align-self-center text-right" th:text="${dogsEnrolled.indexOf(dog) + 1 + '.'}"></div>
+                <div class="col-5 align-self-center" th:text="${dog.getName()}">Name</div>
+                <div class="col-1 text-right align-self-center" th:text="${dog.getCups()}">Cups</div>
+                <div class="col-1"><img th:src="@{../images/icons8-trophy-48.png}" alt="trophy"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="main-div mb-2">
+            <hr class="hr-2 bg-judge">
+            <h4 class="text-judge text-center">Ranking of the last competition</h4>
+            <hr class="hr-2 bg-judge">
+            <table class="table table-hover text-judge">
+                <thead>
+                <tr class="row">
+                    <th class="col-md-8" scope="col"><h5 class="text-center">Dog name</h5></th>
+                    <th class="col-md-2" scope="col"><h5 class="text-center">Money prize</h5></th>
+                    <th class="col-md-2" scope="col"><h5 class="text-center">Get award</h5></th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--        <tr class="row" th:each="dog : ${dogsForSale}">-->
+                <!--          <td class="col-md-8"><h5 class="text-right" th:text="${dog.getName() + '$'}"></td>-->
+                <!--          <td class="col-md-2"><h5 class="text-right" th:text="${dog.getPrice() + '$'}">100 $</h5></td>-->
+                <!--          <td class="col-md-2"><h5 class="text-right" th:text="${dog.getPrice() + '$'}">100 $</h5></td>-->
+                <!--        </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</header>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+<script th:src="@{../js/popup.js}"></script>
+</body>
+</html>
