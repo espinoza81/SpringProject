@@ -358,5 +358,9 @@ public class DogService {
         dogRepository.saveAndFlush(dog);
     }
 
-    public void decreaseAllDogsHealth(){}
+        public void decreaseAllDogsHealth() {
+        List<DogEntity> allDogs = dogRepository.findAll();
+        allDogs.forEach(DogService::decreaseDogHealth);
+        dogRepository.saveAllAndFlush(allDogs);
+    }
 }
