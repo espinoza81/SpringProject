@@ -9,15 +9,22 @@ import org.springframework.stereotype.Component;
 public class ScheduleTasks {
 
     private final CompetitionService competitionService;
+    private final DogService dogService;
 
     @Autowired
-    public ScheduleTasks(CompetitionService competitionService) {
+    public ScheduleTasks(CompetitionService competitionService,
+                         DogService dogService) {
         this.competitionService = competitionService;
+        this.dogService = dogService;
+    }
+    
+    @Scheduled(cron = "0 0 * * * *")
+    public void startCompetition() {
+        competitionService.start();
     }
 
-    @Scheduled(cron = "* 0 * * * *")
-    //@Scheduled(cron = "* */10 * * * *")
-    public void doInBackground() {
-        competitionService.start();
+    @Scheduled(cron = "0 0 */2 * * *")
+    public void decreaseAllDogsHealth() {
+        dogService.decreaseAllDogsHealth();
     }
 }
