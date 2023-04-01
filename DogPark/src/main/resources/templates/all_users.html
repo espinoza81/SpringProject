@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}">
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/commons :: navbar}">
+        Navbar
+    </div>
+
+    <div class="container">
+        <div class="main-div mb-2">
+            <table class="table table-hover text-judge">
+                <thead>
+                <tr class="row">
+                    <th class="col-md-10" scope="col"><h5 class="text-center">Username</h5></th>
+                    <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row" th:each="user : ${allUsers}">
+                    <td class="col-md-10">
+                        <h5 th:text="${user.getGameUsername()}"/>
+                    </td>
+                    <td class="col-md-2 d-flex justify-content-around">
+                        <form   th:unless="${user.isAdmin()}"
+                                th:method="POST"
+                                th:action="@{/user/{userId}/set(userId=${user.id})}">
+                            <button type="submit" class="btn btn-info btn-sm" value="set">
+                                Set Admin
+                            </button>
+                        </form>
+                        <form   th:if="${user.isAdmin()}"
+                                th:method="POST"
+                                th:action="@{/user/{userId}/get(userId=${user.id})}">
+                            <button type="submit" class="btn btn-info btn-sm" value="unset">
+                                Unset Admin
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</header>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+<script th:src="@{../js/popup.js}"></script>
+</body>
+</html>
