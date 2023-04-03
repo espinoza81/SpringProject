@@ -1,14 +1,14 @@
 package dogpark.service;
 
 import dogpark.model.dtos.AddSaleStudDTO;
-import dogpark.model.dtos.BreedingIdsDTO;
-import dogpark.model.entity.*;
+import dogpark.model.entity.BreedEntity;
+import dogpark.model.entity.DogEntity;
+import dogpark.model.entity.SaleEntity;
+import dogpark.model.entity.UserEntity;
 import dogpark.model.enums.SexEnum;
 import dogpark.repository.DogRepository;
-import dogpark.repository.PartnerRepository;
 import dogpark.repository.SaleRepository;
 import dogpark.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static java.lang.Math.min;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,22 +40,14 @@ class SaleServiceTest {
     @InjectMocks
     private SaleService testSaleService;
 
-
     private DogEntity testDog;
 
     private BreedEntity testBreed;
 
     private UserEntity testUser;
 
-    private PartnerEntity testStudOffer;
-
-    private AddSaleStudDTO testStudDTO;
-
     @Captor
     private ArgumentCaptor<DogEntity> dogArgumentCaptor;
-
-    @Captor
-    private ArgumentCaptor<PartnerEntity> offerArgumentCaptor;
 
     @BeforeEach
     void setUp() {
@@ -83,18 +74,6 @@ class SaleServiceTest {
                 health(100).
                 build();
         testDog.setId(COMMON_ID);
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getDogsForSale() {
-    }
-
-    @Test
-    void getDogsNotForSale() {
     }
 
     @Test
@@ -143,9 +122,5 @@ class SaleServiceTest {
         DogEntity saleDog = dogArgumentCaptor.getValue();
 
         assertEquals("newOwner@examle.com", saleDog.getOwner().getEmail());
-    }
-
-    @Test
-    void deleteSale() {
     }
 }

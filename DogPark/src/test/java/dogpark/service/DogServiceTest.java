@@ -5,8 +5,6 @@ import dogpark.model.entity.DogEntity;
 import dogpark.model.entity.UserEntity;
 import dogpark.model.enums.SexEnum;
 import dogpark.repository.DogRepository;
-import jakarta.persistence.Column;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,26 +65,6 @@ class DogServiceTest {
         lenient().when(testDogRepository.findById(COMMON_ID)).thenReturn(Optional.of(testDog));
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getDogInfoById() {
-    }
-
-    @Test
-    void getDog() {
-    }
-
-    @Test
-    void isOwner() {
-    }
-
-    @Test
-    void isNotForSale() {
-    }
-
     @Test
     void getGroomingProcedure() {
         testDogService.getGroomingProcedure(COMMON_ID);
@@ -112,29 +90,5 @@ class DogServiceTest {
         Mockito.verify(testDogRepository).saveAndFlush(dogArgumentCaptor.capture());
 
         assertEquals(testDog.getHunting(), dogArgumentCaptor.getValue().getHunting());
-    }
-
-    @Test
-    void checkHaveEnoughMoney() {
-    }
-
-    @Test
-    void increaseDogHealth() {
-    }
-
-    @Test
-    void decreaseAllDogsHealth() {
-    }
-
-    @Test
-    void giveFood() {
-    }
-
-    @Test
-    void giveTreat() {
-    }
-
-    @Test
-    void save() {
     }
 }

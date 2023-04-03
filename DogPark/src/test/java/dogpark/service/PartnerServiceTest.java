@@ -48,10 +48,6 @@ class PartnerServiceTest {
 
     private UserEntity testMaleOwner;
 
-    private PartnerEntity testStudOffer;
-
-    private AddSaleStudDTO testStudDTO;
-
     @Captor
     private ArgumentCaptor<DogEntity> dogArgumentCaptor;
 
@@ -84,18 +80,6 @@ class PartnerServiceTest {
                 build();
         testMaleDog.setId(COMMON_ID);
 
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getDogsForStud() {
-    }
-
-    @Test
-    void getDogsSex() {
     }
 
     @Test

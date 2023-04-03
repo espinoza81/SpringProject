@@ -1,10 +1,9 @@
 package dogpark.service;
 
+import dogpark.model.dtos.ParticipantDTO;
 import dogpark.model.entity.DogEntity;
 import dogpark.model.entity.ParticipantEntity;
-import dogpark.model.entity.PartnerEntity;
 import dogpark.model.entity.UserEntity;
-import dogpark.model.enums.SexEnum;
 import dogpark.repository.DogRepository;
 import dogpark.repository.ParticipantRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +33,9 @@ class CompetitionServiceTest {
     @Captor
     private ArgumentCaptor<List<ParticipantEntity>> participantsArgumentCaptor;
 
+    @Captor
+    private ArgumentCaptor<ParticipantEntity> singleParticipantArgumentCaptor;
+
     @BeforeEach
     void setUp() {
     }
@@ -48,6 +50,24 @@ class CompetitionServiceTest {
 
     @Test
     void enrollDog() {
+        DogEntity dogFirst = DogEntity.builder().
+                grooming(10).
+                hunting(10).
+                agility(10).
+                health(10).
+                build();
+        dogFirst.setId(1L);
+
+        ParticipantDTO participantDTO = ParticipantDTO.builder().
+                dogId(1L).
+                build();
+        when(testDogRepository.findById(participantDTO.getDogId())).thenReturn(Optional.of(dogFirst));
+
+        testCompetitionService.enrollDog(participantDTO);
+
+        Mockito.verify(testParticipantRepository).save(singleParticipantArgumentCaptor.capture());
+
+        assertEquals(10, singleParticipantArgumentCaptor.getValue().getDog().getAgility());
     }
 
     @Test
@@ -111,15 +131,9 @@ class CompetitionServiceTest {
 
         testCompetitionService.start();
 
-//        Mockito.verify(testParticipantRepository).saveAndFlush(participantsArgumentCaptor.capture());
+        Mockito.verify(testParticipantRepository).saveAllAndFlush(participantsArgumentCaptor.capture());
 
-    }
+        assertEquals(1470, participantsArgumentCaptor.getValue().get(0).getDog().getOwner().getMoney());
 
-    @Test
-    void score() {
-    }
-
-    @Test
-    void getDogStats() {
     }
 }

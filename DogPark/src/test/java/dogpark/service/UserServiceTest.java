@@ -1,18 +1,17 @@
 package dogpark.service;
 
+import dogpark.model.dtos.ShelterDTO;
 import dogpark.model.dtos.UserRegistrationDTO;
-import dogpark.model.entity.UserEntity;
-import dogpark.model.entity.UserRoleEntity;
+import dogpark.model.entity.*;
+import dogpark.model.enums.SexEnum;
 import dogpark.model.enums.UserRoleEnum;
+import dogpark.repository.PartnerRepository;
 import dogpark.repository.UserRepository;
 import dogpark.repository.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -47,6 +46,9 @@ class UserServiceTest {
     private DogService mockDogService;
     @Mock
     private UserRoleRepository mockUserRoleRepository;
+
+    @InjectMocks
+    private UserService mockUserService;
 
     @Captor
     private ArgumentCaptor<UserEntity> userEntityArgumentCaptor;
@@ -139,5 +141,115 @@ class UserServiceTest {
         UserEntity actualSavedUser = userEntityArgumentCaptor.getValue();
 
         assertFalse(actualSavedUser.getRoles().stream().anyMatch(r -> r.equals(role)));
+    }
+
+    @Test
+    void shelterStats(){
+        UserEntity user = UserEntity.builder().
+                money(1000).
+                shelterName("Test Shelter Name").
+                email("email").
+                dogs(new ArrayList<>()).
+                build();
+        user.setId(1L);
+
+        BreedEntity testBreed = BreedEntity.builder().
+                name("Chihuahua").
+                grooming(90).
+                hunting(50).
+                agility(70).
+                build();
+        testBreed.setId(1L);
+
+        DogEntity dogFirst = DogEntity.builder().
+                awardCup(2).
+                owner(user).
+                breedEntity(testBreed).
+                grooming(10).
+                hunting(10).
+                agility(10).
+                health(10).
+                sex(SexEnum.M).
+                name("First Dog").
+                studOffers(new ArrayList<>()).
+                build();
+        dogFirst.setId(1L);
+
+        DogEntity dogSecond = DogEntity.builder().
+                awardCup(1).
+                owner(user).
+                breedEntity(testBreed).
+                grooming(20).
+                hunting(20).
+                agility(20).
+                health(20).
+                sex(SexEnum.M).
+                name("Second Dog").
+                studOffers(new ArrayList<>()).
+                build();
+        dogSecond.setId(2L);
+
+        DogEntity dogThird = DogEntity.builder().
+                breedEntity(testBreed).
+                owner(user).
+                grooming(30).
+                hunting(30).
+                agility(30).
+                health(30).
+                sex(SexEnum.F).
+                name("Third Dog").
+                studOffers(new ArrayList<>()).
+                build();
+        dogThird.setId(3L);
+
+        DogEntity dogFour = DogEntity.builder().
+                breedEntity(testBreed).
+                grooming(40).
+                owner(user).
+                hunting(40).
+                agility(40).
+                health(40).
+                sex(SexEnum.M).
+                name("Four Dog").
+                studOffers(new ArrayList<>()).
+                build();
+        dogFour.setId(4L);
+
+        PartnerEntity offerInactive = PartnerEntity.builder().
+                active(false).
+                dog(dogFour).
+                price(100).
+                build();
+        offerInactive.setId(1L);
+
+        PartnerEntity offerActive = PartnerEntity.builder().
+                active(true).
+                dog(dogFour).
+                price(100).
+                build();
+        offerActive.setId(2L);
+
+        SaleEntity sale = SaleEntity.builder().
+                price(200).
+                build();
+        sale.setId(1L);
+
+        dogFour.addStudOffer(offerActive);
+        dogFour.addStudOffer(offerInactive);
+        dogFour.setSale(sale);
+
+
+
+        user.addDog(dogFirst);
+        user.addDog(dogSecond);
+        user.addDog(dogThird);
+        user.addDog(dogFour);
+
+        when(mockUserRepository.findUserEntityByEmail("email")).thenReturn(Optional.of(user));
+
+        ShelterDTO shelterStats = mockUserService.getShelterStats("email");
+
+        assertEquals(3, shelterStats.getCupCount());
+        assertEquals(1, shelterStats.getStudOffers().size());
     }
 }
