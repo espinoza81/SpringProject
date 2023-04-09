@@ -16,14 +16,14 @@
             th:object="${addSaleDTO}"
             class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
       <div class="row d-flex justify-content-center mb-3">
-        <div class="col-md-10" >
+        <div class="col-md-8 col-sm-12" >
           <div class="mb-1 text-white">Select one of your dogs</div>
           <select class="form-select mt-3" aria-label="Default select example" th:field="*{dogId}">
             <option value="0" selected th:text="${dogsOwner.size()==1 ? 'You can`t sale the last dog' : 'Select one of your dogs'}"></option>
             <option th:if="${dogsOwner.size() > 1}" th:each="dog: ${dogsOwner}" th:value="${dog.getId()}" th:text="${dog.getName()}" />
           </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4 col-sm-12">
           <label for="price" class="text-white font-weight-bold">Price</label>
           <input
                   th:field="*{price}"
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="row d-flex justify-content-center text-center">
-        <div class="button-holder col-md-4">
+        <div class="button-holder col-4">
           <button type="submit" class="btn btn-info btn-lg" value="sale">Sale</button>
         </div>
       </div>
@@ -51,19 +51,19 @@
       <table class="table table-hover text-judge">
         <thead>
         <tr class="row">
-          <th class="col-md-8" scope="col"><h5 class="text-center">Dog name</h5></th>
-          <th class="col-md-2" scope="col"><h5 class="text-center">Price</h5></th>
-          <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
+          <th class="col-8" scope="col"><h5 class="text-center">Dog name</h5></th>
+          <th class="col-2" scope="col"><h5 class="text-center">Price</h5></th>
+          <th class="col-2" scope="col"><h5 class="text-center">Actions</h5></th>
         </tr>
         </thead>
         <tbody>
         <tr class="row" th:each="dog : ${dogsForSale}">
-          <td class="col-md-8">
+          <td class="col-8">
             <button class="accordion text-left" th:text="${dog.getName()}"></button>
             <div th:replace="~{fragments/dog-info::dog_info(dog=${dog})}"></div>
           </td>
-          <td class="col-md-2"><h5 class="text-right" th:text="${dog.getPrice() + '$'}">100 $</h5></td>
-          <td class="col-md-2 d-flex justify-content-around">
+          <td class="col-2"><h5 class="text-right" th:text="${dog.getPrice() + '$'}">100 $</h5></td>
+          <td class="col-2 d-flex justify-content-around">
             <form
                     th:method="POST"
                     th:action="@{/dog/{dogId}/sale(dogId=${dog.id})}">

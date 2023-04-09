@@ -19,7 +19,7 @@
                 th:object="${addBreedDTO}"
                 class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
             <div class="row d-flex justify-content-center">
-                <div class="col-md-10 mb-3" >
+                <div class="col-10 mb-3" >
                     <label for="name" class="text-white font-weight-bold">Name</label>
                     <input
                             th:field="*{name}"
@@ -34,7 +34,7 @@
                         Name error!
                     </small>
                 </div>
-                <div class="col-md-10 mb-3">
+                <div class="col-10 mb-3">
                     <label for="imgURL" class="text-white font-weight-bold">Image URL</label>
                     <input
                             th:field="*{imgURL}"
@@ -49,7 +49,7 @@
                         Image URL error!
                     </small>
                 </div>
-                <div class="col-md-10 mb-3">
+                <div class="col-10 mb-3">
                     <label for="description" class="text-white font-weight-bold">Description</label>
                     <textarea
                             th:field="*{description}"
@@ -64,7 +64,7 @@
                            class="text-danger"></small>
                 </div>
 
-                <div class="col-md-10 mb-3">
+                <div class="col-10 mb-3">
                     <label for="grooming" class="text-white font-weight-bold">Grooming stats</label>
                     <input
                             th:field="*{grooming}"
@@ -77,7 +77,7 @@
                     <small th:if="${#fields.hasErrors('grooming')}" th:errorclass="error" th:errors="*{grooming}"
                            class="text-danger"></small>
                 </div>
-                <div class="col-md-10 mb-3">
+                <div class="col-10 mb-3">
                     <label for="agility" class="text-white font-weight-bold">Agility stats</label>
                     <input
                             th:field="*{agility}"
@@ -90,7 +90,7 @@
                     <small th:if="${#fields.hasErrors('agility')}" th:errorclass="error" th:errors="*{agility}"
                            class="text-danger"></small>
                 </div>
-                <div class="col-md-10 mb-3">
+                <div class="col-10 mb-3">
                     <label for="hunting" class="text-white font-weight-bold">Hunting stats</label>
                     <input
                             th:field="*{hunting}"
@@ -106,7 +106,7 @@
 
             </div>
             <div class="row d-flex justify-content-center">
-                <div class="button-holder col-md-4">
+                <div class="button-holder col-4">
                     <button type="submit" class="btn btn-info btn-lg" value="Add breed">Add breed</button>
                 </div>
             </div>

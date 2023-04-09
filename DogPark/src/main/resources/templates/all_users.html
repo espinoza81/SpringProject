@@ -14,13 +14,13 @@
             <table class="table table-hover text-judge">
                 <thead>
                 <tr class="row">
-                    <th class="col-md-10" scope="col"><h5 class="text-center">Username</h5></th>
-                    <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
+                    <th class="col-10" scope="col"><h5 class="text-center">Username</h5></th>
+                    <th class="col-2" scope="col"><h5 class="text-center">Actions</h5></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="row" th:each="user : ${allUsers}">
-                    <td class="col-md-10">
+                    <td class="col-10">
                         <h5 th:text="${user.getGameUsername()}"/>
                     </td>
                     <td class="col-md-2 d-flex justify-content-around">

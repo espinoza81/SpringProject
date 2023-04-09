@@ -14,17 +14,17 @@
             <table class="table table-hover text-judge">
                 <thead>
                 <tr class="row">
-                    <th class="col-md-10" scope="col"><h5 class="text-center">Dog name</h5></th>
-                    <th class="col-md-2" scope="col"><h5 class="text-center">Actions</h5></th>
+                    <th class="col-10" scope="col"><h5 class="text-center">Dog name</h5></th>
+                    <th class="col-2" scope="col"><h5 class="text-center">Actions</h5></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="row" th:each="dog : ${myDogs}">
-                    <td class="col-md-10">
+                    <td class="col-10">
                         <button class="accordion text-left" th:text="${dog.getName()}"></button>
                         <div th:replace="~{fragments/dog-info::dog_info(dog=${dog})}"></div>
                     </td>
-                    <td class="col-md-2 d-flex justify-content-around">
+                    <td class="col-2 d-flex justify-content-around">
                         <a   th:unless="${dog.isForSale()}"
                                 th:href="@{/dog/{dogId}(dogId=${dog.id})}">
                             <button type="submit" class="btn btn-info btn-sm" value="play">
